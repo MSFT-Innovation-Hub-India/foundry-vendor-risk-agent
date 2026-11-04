@@ -12,11 +12,14 @@ the audit record of the decision.
    residual (trend arrow). **Embed the residual-vs-prior trend chart here**, with a
    one-line reading of the direction and why.
 4. **Facts of record** — from the database: contract value, data tier/PII/residency,
-   incident count (and any breach), SLA breach count. Cite the figures.
-5. **Control assessment** — per domain: mandatory controls, answer, and gaps. Flag the
-   hard-stop gaps prominently. **Embed the control-coverage radar and the
-   gap-severity-by-domain chart here**, each with a 1–2 sentence reading (which domains
-   are strong, which drive the gaps).
+   incident count (and any breach), SLA breach count, the **prior assessment** (date, prior
+   residual, prior recommendation) when one exists, and a one-line **spend trend** (flag it
+   if the latest year's spend exceeds the stated annual contract value). Cite the figures.
+5. **Control assessment** — **list the mandatory controls assessed for the tier with each
+   one's answer, not only the gaps**: a clean "no gaps" result must still show which controls
+   were checked and met, so an Approve is as auditable as a Reject. Flag the hard-stop gaps
+   prominently. **Embed the control-coverage radar and the gap-severity-by-domain chart
+   here**, each with a 1–2 sentence reading (which domains are strong, which drive the gaps).
 6. **History adjustments** — each adjustment applied, with the incident/breach that
    triggered it.
 7. **Conditions / remediations** — the list, with due dates (omit if a clean Approve).
@@ -42,7 +45,8 @@ on bars/points.
   heatmap.
 - **Residual-vs-prior trend** — residual band now vs the prior assessment; x ticks
   "Prior"/"Current", y ticks the band names (Low/Moderate/High/Critical), each point
-  annotated with its band.
+  annotated with its band. When the two bands are equal, describe the movement as
+  **unchanged** — not "improved" or "worsened".
 (A spend-history bar is optional context.)
 
 Every number in the charts must come from computed values, not estimates. Do not embed a

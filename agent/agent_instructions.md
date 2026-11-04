@@ -70,6 +70,8 @@ numbers. So you **stage to files and compute with code**; you never eyeball a sc
 ## 4. Score (write + run code) — and self-correct (max 5 fixes)
 - Determine the **mandatory controls for the tier** (from the policy) and map the parsed
   answers onto them. Identify gaps (mandatory controls answered No/Partial or not evidenced).
+  Keep the **full mapped table** — every mandatory control with its answer and a met/gap
+  flag — because the memo lists all of them, not only the gaps.
 - Compute **inherent risk**, **control effectiveness**, and **residual risk** exactly per
   the methodology; apply **incident/SLA history adjustments** (cite each trigger); apply
   **hard stops**.
@@ -92,12 +94,16 @@ and save with `bbox_inches="tight"` so nothing is clipped. Specifically:
   second labeled series. Title e.g. *"Control coverage by domain (0–1)"*.
 - **Gap severity by domain** — a bar chart (or heatmap) with the **domain names on one
   axis**, the **gap count/severity on the other with its unit**, and **each bar/cell
-  annotated with its value**. If a heatmap, include a **labeled colorbar**. Descriptive
-  title.
+  annotated with its value**. If a heatmap, include a **labeled colorbar**. **Fix the value
+  axis to its full range** (e.g. `ylim(0,1)` for a 0–1 severity ratio) so an all-zero
+  "no gaps" result reads as zero against the full scale, not an auto-zoomed band of noise.
+  Descriptive title.
 - **Residual vs prior trend** — x-axis the ordered points **"Prior" and "Current"** as tick
   labels; y-axis the **risk bands** with the **band names as tick labels**
   (Low / Moderate / High / Critical), not bare numbers; **annotate each point with its
-  band**; title e.g. *"Residual risk: prior → current"*.
+  band**; title e.g. *"Residual risk: prior → current"*. When the two bands are **equal**,
+  describe the movement as **unchanged** — never "improved" or "worsened"; reserve those for
+  an actual band change (down = improved, up = worsened).
 - **Verify each PNG before moving on:** confirm every figure has a non-empty title, axis
   labels, category/tick labels, and a legend or colorbar where applicable. If any is
   missing or unreadable, fix the plotting code and re-render (counts toward the step-4 fix
@@ -116,6 +122,13 @@ and save with `bbox_inches="tight"` so nothing is clipped. Specifically:
   two sentences of interpretation that explicitly reference the figure** and state what the
   reader should take from it (e.g. "Figure 1 shows coverage is strong on D2/D5 but collapses
   on D1/D3, the hard-stop domains"). A chart with no interpreting sentence nearby is a defect.
+- **Account for every fact you pulled — especially on a clean Approve.** The memo must
+  (a) **enumerate the mandatory controls assessed** for the tier with each one's answer, not
+  only the gaps — a "no gaps" memo that shows no control list is incomplete; (b) state the
+  **prior assessment** (date, prior residual, prior recommendation) in Facts of record when
+  one exists; (c) include a one-line **spend trend**, and flag it if the latest year's spend
+  exceeds the stated annual contract value; (d) word the residual trend as **unchanged** when
+  the band did not move. An Approve must be as auditable as a Reject.
 - **Publish the report to get the analyst a link.** POST the HTML to the report viewer at
   `<report-host-url>/reports` with a JSON body
   `{"html": <the full HTML string>, "title": "<Vendor> risk memo"}`. Do this from the
