@@ -1,0 +1,13 @@
+AssessmentId,VendorId,AssessmentDate,InherentRisk,ResidualRisk,Recommendation
+9001,1003,2025-09-30,High,High,ApproveWithConditions
+9002,1007,2025-10-15,Medium,Low,Approve
+9003,1001,2024-12-06,Low,Low,Approve
+9004,1004,2025-08-14,High,High,Approve
+9005,1005,2026-03-05,High,Low,Approve
+9006,1006,2025-01-29,High,Low,ApproveWithConditions
+9007,1008,2025-12-10,High,High,Approve
+9008,1010,2025-06-30,High,High,ApproveWithConditions
+9009,1012,2025-11-06,High,Low,ApproveWithConditions
+9010,1013,2025-05-20,High,Medium,ApproveWithConditions
+9011,1014,2026-04-11,Low,Medium,Approve
+9012,1015,2025-07-30,Low,Medium,Approve

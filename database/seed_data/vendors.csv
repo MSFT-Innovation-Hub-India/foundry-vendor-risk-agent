@@ -1,0 +1,16 @@
+VendorId,VendorName,Industry,Country,Criticality,OnboardingStatus,FirstEngagedDate
+1001,Contoso Cloud,SaaS,India,Medium,Active,2025-04-03
+1002,Fabrikam Payments,SaaS,United States,Low,Active,2025-03-15
+1003,Acme Analytics,Analytics,United States,High,Prospective,2026-08-14
+1004,Globex HR,Managed IT,Canada,Medium,Active,2025-08-12
+1005,Initech Managed IT,Logistics,Australia,Medium,Active,2025-12-27
+1006,Umbrella Marketing,Marketing,Australia,Low,Prospective,2023-07-02
+1007,Northwind Logistics,Logistics,Germany,Medium,Prospective,2026-09-02
+1008,Soylent SaaS,Logistics,India,Low,Active,2025-03-25
+1009,Stark Hosting,Marketing,Ireland,High,Prospective,2025-08-05
+1010,Wayne Data,Logistics,United Kingdom,Medium,Prospective,2024-12-29
+1011,Wonka Logistics,SaaS,Australia,Medium,Prospective,2025-01-02
+1012,Cyberdyne Analytics,Managed IT,Ireland,High,Prospective,2025-09-15
+1013,Hooli Infrastructure,Analytics,Canada,Medium,Prospective,2025-04-11
+1014,Vehement Email,Cloud Infrastructure,United Kingdom,High,Active,2024-02-21
+1015,Massive Dynamic CRM,Marketing,Canada,Low,Active,2023-07-01

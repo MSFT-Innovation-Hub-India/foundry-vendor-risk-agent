@@ -1,0 +1,16 @@
+VendorId,DataClassificationTier,ProcessesPII,DataResidency,SystemsAccessed
+1001,Public,0,EU,Email delivery; Email delivery
+1002,Restricted,1,US,Freight & logistics; Endpoint management
+1003,Restricted,1,US,Customer data warehouse; production analytics pipeline
+1004,Internal,0,Global,CRM platform; Web analytics
+1005,Internal,0,Global,Email delivery; CRM platform
+1006,Confidential,1,Global,Email delivery; Web analytics
+1007,Internal,0,EU,Shipment tracking API; carrier scheduling portal
+1008,Confidential,0,US,Freight & logistics; Email delivery
+1009,Restricted,1,EU,Web analytics; Email delivery
+1010,Internal,0,EU,CRM platform; Cloud hosting
+1011,Internal,0,US,Freight & logistics; CRM platform
+1012,Internal,0,UK,Payroll processing; Freight & logistics
+1013,Confidential,0,EU,Data enrichment; Email delivery
+1014,Public,0,US,Endpoint management; Endpoint management
+1015,Restricted,0,UK,Email delivery; Web analytics

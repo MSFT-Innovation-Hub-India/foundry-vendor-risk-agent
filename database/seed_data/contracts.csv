@@ -1,0 +1,16 @@
+ContractId,VendorId,AnnualValueUSD,StartDate,EndDate,Status,ServiceDescription
+5001,1001,240000.00,2026-04-24,2027-04-24,Active,Data enrichment
+5002,1002,45000.00,2024-09-23,2025-09-23,Active,Web analytics
+5003,1003,480000.00,2024-08-13,2025-08-13,Pending,Payroll processing
+5004,1004,360000.00,2026-06-16,2027-06-16,Active,Web analytics
+5005,1005,360000.00,2025-01-17,2026-01-17,Active,Freight & logistics
+5006,1006,80000.00,2025-09-15,2026-09-15,Active,Payroll processing
+5007,1007,120000.00,2024-07-27,2025-07-27,Pending,Cloud hosting
+5008,1008,360000.00,2025-11-05,2026-11-05,Active,Data enrichment
+5009,1009,45000.00,2026-06-10,2027-06-10,Active,CRM platform
+5010,1010,150000.00,2026-01-30,2027-01-30,Active,Cloud hosting
+5011,1011,80000.00,2025-03-01,2026-03-01,Active,Email delivery
+5012,1012,45000.00,2024-09-13,2025-09-13,Active,Data enrichment
+5013,1013,45000.00,2024-08-15,2025-08-15,Active,Payroll processing
+5014,1014,80000.00,2024-11-26,2025-11-26,Active,Data enrichment
+5015,1015,360000.00,2026-04-16,2027-04-16,Active,Web analytics

@@ -1,0 +1,11 @@
+BreachId,VendorId,BreachDate,SLAType,TargetValue,ActualValue,PenaltyAppliedUSD
+8001,1003,2026-04-02,Availability,99.9%,99.2%,5000.00
+8002,1003,2026-06-11,ResolutionTime,4h,19h,2500.00
+8003,1004,2025-05-31,Availability,99.9%,99.5%,2500.00
+8004,1004,2026-02-27,ResponseTime,99.9%,99.5%,2500.00
+8005,1008,2025-02-16,Availability,99.9%,99.5%,0.00
+8006,1009,2025-02-26,Availability,99.9%,99.5%,0.00
+8007,1009,2026-01-03,Availability,99.9%,99.5%,2500.00
+8008,1010,2025-04-28,Availability,99.9%,99.5%,2500.00
+8009,1013,2026-08-31,ResponseTime,99.9%,99.5%,1000.00
+8010,1014,2025-11-14,ResponseTime,99.9%,99.5%,2500.00
