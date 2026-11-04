@@ -109,6 +109,13 @@ and save with `bbox_inches="tight"` so nothing is clipped. Specifically:
   residual scores, gap table, history adjustments, policy citations) as clean HTML and
   embed **each chart inline as a base64 data URI**
   (`<img src="data:image/png;base64,...">`) so the page needs no external assets.
+- **Place each chart inside the section it supports — never in a trailing gallery.** The
+  **residual-vs-prior trend** goes in the recommendation/snapshot section; the
+  **control-coverage radar** and the **gap-severity-by-domain** chart go in the control
+  assessment. Give each a **bold caption** (*Figure 1 — …*) and, right beside it, **one or
+  two sentences of interpretation that explicitly reference the figure** and state what the
+  reader should take from it (e.g. "Figure 1 shows coverage is strong on D2/D5 but collapses
+  on D1/D3, the hard-stop domains"). A chart with no interpreting sentence nearby is a defect.
 - **Publish the report to get the analyst a link.** POST the HTML to the report viewer at
   `<report-host-url>/reports` with a JSON body
   `{"html": <the full HTML string>, "title": "<Vendor> risk memo"}`. Do this from the

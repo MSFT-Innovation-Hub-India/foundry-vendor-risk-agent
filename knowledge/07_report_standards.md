@@ -9,16 +9,24 @@ the audit record of the decision.
 2. **Recommendation** (one line) — Approve / Approve with Conditions / Reject, residual
    band, and the single biggest driver.
 3. **Snapshot table** — inherent risk, control effectiveness, residual risk, prior
-   residual (trend arrow).
+   residual (trend arrow). **Embed the residual-vs-prior trend chart here**, with a
+   one-line reading of the direction and why.
 4. **Facts of record** — from the database: contract value, data tier/PII/residency,
    incident count (and any breach), SLA breach count. Cite the figures.
 5. **Control assessment** — per domain: mandatory controls, answer, and gaps. Flag the
-   hard-stop gaps prominently.
+   hard-stop gaps prominently. **Embed the control-coverage radar and the
+   gap-severity-by-domain chart here**, each with a 1–2 sentence reading (which domains
+   are strong, which drive the gaps).
 6. **History adjustments** — each adjustment applied, with the incident/breach that
    triggered it.
 7. **Conditions / remediations** — the list, with due dates (omit if a clean Approve).
-8. **Charts** — embedded (see below).
-9. **Assumptions & caveats** — any ambiguity in the questionnaire and how it was resolved.
+8. **Assumptions & caveats** — any ambiguity in the questionnaire and how it was resolved.
+
+**Charts are embedded in the section they support, not collected into an appendix.** Each
+chart sits directly under a **bold figure caption** (e.g. *Figure 1 — Control coverage by
+domain*), and the surrounding text **refers to the figure** and states the one or two
+things the reader should take from it. A chart with no interpreting sentence nearby is a
+defect.
 
 ## Required charts (rendered in the sandbox, embedded as images)
 Each chart must be **self-explanatory on its own** — a reader seeing only the image must
