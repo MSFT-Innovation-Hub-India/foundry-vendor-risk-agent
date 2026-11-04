@@ -1,6 +1,7 @@
 """Live verification: send the Acme questionnaire to the deployed agent, auto-approve
-its MCP tool calls, and print the final memo. Exercises agent -> MCP -> sandbox -> memo."""
-import os, pathlib
+its MCP tool calls, print the final chat summary, and fetch the report link it returns.
+Exercises agent -> MCP -> sandbox -> HTML report -> report viewer."""
+import os, pathlib, re, urllib.request
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
 
@@ -40,7 +41,20 @@ with DefaultAzureCredential() as cred, \
             continue
 
         if txt and any(k in txt.lower() for k in KEYWORDS):
-            print("\n=== FINAL MEMO ===\n" + txt)
+            print("\n=== FINAL CHAT SUMMARY ===\n" + txt)
+            m = re.search(r"https?://[^\s)\]>]+/r/[^\s)\]>]+", txt)
+            if m:
+                link = m.group(0)
+                print("\n=== REPORT LINK ===\n" + link)
+                try:
+                    with urllib.request.urlopen(link, timeout=20) as r:
+                        body = r.read()
+                    print(f"   fetched OK: HTTP {r.status}, {len(body)} bytes, "
+                          f"embeds charts: {b'data:image' in body.lower()}")
+                except Exception as e:
+                    print("   WARNING: could not fetch report link:", e)
+            else:
+                print("\n(no report link found in the chat summary)")
             break
 
         nudges += 1

@@ -1,11 +1,14 @@
 # Deployment guide
 
-This kit deploys in three parts:
+This kit deploys in four parts:
 1. a **serverless Azure SQL** database (schema + seed),
 2. an **MCP server** on **Azure Container Apps** that reads the DB over its **managed
-   identity** (no passwords), and
-3. a **Foundry Copilot-harness prompt agent** that uses the MCP tool + a policy Knowledge
-   source + the sandbox.
+   identity** (no passwords),
+3. a tiny **report-viewer** web app on Container Apps that serves the finished HTML memo
+   at a public link — store-and-serve only, no DB and no secrets, and
+4. a **Foundry Copilot-harness prompt agent** that uses the MCP tool + a policy Knowledge
+   source + the sandbox; it assembles a self-contained HTML report, posts it to the
+   viewer, and returns a formatted summary **and the link** in chat.
 
 Replace every `<...>` placeholder with your own values. Scripts read these from env vars
 (see `deploy/.env.example`); CLI commands below show the variables inline.
@@ -61,29 +64,45 @@ python deploy/smoke_test.py
 > `list_vendors`, `get_vendor_profile`, `get_incident_history`, `get_sla_breaches`,
 > `get_prior_assessments`, `get_spend_history`. The agent writes no SQL.
 
+## 2b. Report viewer on Container Apps
+A separate, minimal service (**not** the MCP) that stores the agent's finished HTML report
+and serves it at a link. No database, no managed identity, no secrets — just store-and-serve.
+```bash
+az acr build -r <acr-name> -t tprm-report:v1 ./report-host
+
+az containerapp create -n tprm-report -g <aca-rg> --environment <aca-env> \
+  --image <acr-name>.azurecr.io/tprm-report:v1 \
+  --registry-server <acr-name>.azurecr.io \
+  --ingress external --target-port 8000 --transport http \
+  --min-replicas 1 --max-replicas 1 --cpu 0.5 --memory 1.0Gi
+```
+If your ACR pulls with **admin creds**, add `--registry-username`/`--registry-password`
+from `az acr credential show -n <acr-name>`; if it pulls with a **managed identity**, add
+`--system-assigned --registry-identity system` and grant that identity `AcrPull`.
+Note the app FQDN — `https://<report-fqdn>` is the `<report-host-url>` the agent needs.
+Quick check:
+```bash
+curl -s https://<report-fqdn>/health      # -> {"status":"ok","count":0}
+```
+
 ## 3. Foundry Copilot-harness agent (portal)
 In your Foundry project:
 1. **Agents → New → Use the Microsoft Copilot harness** (Text). Pick a reasoning+tools model.
-2. **Instructions:** paste `agent/agent_instructions.md`.
+2. **Instructions:** paste `agent/agent_instructions.md`, and replace the
+   `<report-host-url>` placeholder in it with your report viewer's `https://<report-fqdn>`
+   (from part 2b).
 3. **Harness tools:** enable **File system read**, **File system write**, **Shell**.
 4. **Tools → Add → MCP:** URL `https://<app-fqdn>/mcp`, auth **None**.
 5. **Knowledge → Upload files:** all 7 `knowledge/*.md`.
 6. **Save.**
 
-### Agent identity needs Foundry Files write
-So the agent can upload the finished memo + charts, grant its account identity the
-**Foundry User** role (data-plane role `53ca6127-db72-4b80-b1b0-d745d6d5456d`):
-```bash
-az role assignment create --role "Foundry User" \
-  --assignee-object-id <foundry-account-principal-id> --assignee-principal-type ServicePrincipal \
-  --scope "/subscriptions/<subscription-id>/resourceGroups/<foundry-rg>/providers/Microsoft.CognitiveServices/accounts/<foundry-account>"
-```
-(The `<foundry-account-principal-id>` is the Foundry AIServices account's system-assigned
-identity: `az cognitiveservices account show -n <foundry-account> -g <foundry-rg> --query identity.principalId -o tsv`.)
+> No Foundry Files role grant is needed — the agent delivers the report through the
+> report viewer (part 2b), not Foundry Files.
 
 ## Verify end to end
 `deploy/verify_agent.py` sends the Acme questionnaire, **auto-approves the MCP tool calls**
-(the agent's MCP tool defaults to require-approval), and prints the final memo:
+(the agent's MCP tool defaults to require-approval), and prints the final chat summary and
+the **report link** (open it to see the formatted HTML memo with charts):
 ```bash
 export FOUNDRY_ENDPOINT=https://<foundry-account>.services.ai.azure.com/api/projects/<project>
 export AGENT_NAME=TPRM-Risk-Assessor
@@ -101,6 +120,8 @@ hard-stop control gaps, plus the seeded data breach. The agent ignores the plant
 ## Teardown
 ```bash
 az containerapp delete -n tprm-mcp -g <aca-rg> -y
+az containerapp delete -n tprm-report -g <aca-rg> -y
 az sql db delete -g <sql-rg> -s <sql-server> -n tprmdb -y
 az acr repository delete -n <acr-name> --repository tprm-mcp -y
+az acr repository delete -n <acr-name> --repository tprm-report -y
 ```

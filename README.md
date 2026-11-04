@@ -1,7 +1,8 @@
 # Foundry Vendor Risk Agent — TPRM Assessment on the Copilot Harness
 
 > See **`DEPLOYMENT.md`** for the full Azure deployment guide (serverless Azure SQL + an MCP
-> Container App with **managed-identity** auth + the Foundry Copilot-harness agent).
+> Container App with **managed-identity** auth + a small **report-viewer** Container App +
+> the Foundry Copilot-harness agent).
 > Environment-specific values (endpoints, subscription/principal IDs) are placeholders —
 > fill them with your own. The deployed design authenticates to SQL via the Container App's
 > managed identity (no SQL login/password); the generic "read-only login" steps below are a
@@ -12,8 +13,9 @@ and asks whether to onboard them. The agent reads the questionnaire, pulls the v
 **facts of record** from Azure SQL (via a read-only MCP layer), grounds every rule in a
 **TPRM policy library** (vector search), then **writes and runs its own analysis code in
 the sandbox** to score the vendor and render charts — self-correcting until the scoring
-ties out — and returns an auditable **Markdown risk memo** with a clear recommendation:
-**Approve / Approve with Conditions / Reject.**
+ties out — and returns an auditable risk memo: a concise **chat summary** plus a
+self-contained **HTML report** (charts embedded) served at a **link**, with a clear
+recommendation: **Approve / Approve with Conditions / Reject.**
 
 ## Why this is a slam-dunk for the harness sandbox
 - **The code can't be pre-written.** Every vendor submits a differently-structured
@@ -23,9 +25,9 @@ ties out — and returns an auditable **Markdown risk memo** with a clear recomm
   assembled on disk — files are the native output medium here, not decoration.
 - **The interim is genuinely throwaway.** The extracted answers table, the
   control-mapping, the computed scores, the draft chart PNGs are scaffolding for the
-  memo. They don't deserve cloud storage — only the final memo is uploaded to persist.
-  "Write code, run it, discard it" is *true here*, and it follows from the bespoke-code
-  need rather than being the excuse for it.
+  memo. They don't deserve cloud storage — only the final report is published (to the
+  report viewer) to persist. "Write code, run it, discard it" is *true here*, and it
+  follows from the bespoke-code need rather than being the excuse for it.
 
 ## The input
 A one-line analyst instruction **+ the vendor's questionnaire**:
@@ -61,7 +63,13 @@ Analyst: "Assess <vendor>" + questionnaire file
 [chart PNGs]  render from computed values
    │
    ▼
-[assemble memo.md] ── upload memo + charts to Foundry Files ── return link + verdict
+[assemble report.html]  self-contained; charts embedded as base64 data URIs
+   │
+   ▼
+[POST to report viewer]  separate store-and-serve Container App → public link
+   │
+   ▼
+reply in chat: formatted summary + verdict + the report link
 ```
 
 ## What's in this kit
@@ -73,6 +81,7 @@ Analyst: "Assess <vendor>" + questionnaire file
 | `database/seed_data/*.csv` | Same data as CSVs |
 | `mcp/tool_contract.md` | **Authoritative spec** for the 6 read-only MCP tools (names, params, exact SQL, security caps) |
 | `mcp/mcp_server.py` | Reference MCP server (FastMCP + pyodbc) implementing that contract |
+| `report-host/` | Tiny store-and-serve web app (a **separate** Container App) that hosts the finished HTML report at a link — no DB, no secrets |
 | `knowledge/*.md` | The TPRM policy library to load as a Knowledge / vector source |
 | `agent/agent_instructions.md` | The agent system prompt |
 | `samples/questionnaire_*.{xlsx,md}` | Two sample vendor submissions (one fails, one passes) |
@@ -98,9 +107,15 @@ read-only login, and register it on the agent as an **MCP tool**. See `mcp/tool_
 for the six parameterized tools. (A function/OpenAPI tool would work equally well; MCP is
 the cleaner fit if the DB should be a reusable tool server.)
 
+### 2b. Report viewer (report delivery)
+Deploy `report-host/` as a **second** Container App — store-and-serve only, no DB and no
+secrets. The agent assembles a self-contained HTML report in the sandbox, POSTs it here,
+and hands the analyst the returned link. This keeps the MCP server pure (DB access only).
+
 ### 3. Agent (Copilot harness)
 Create a **prompt agent → Use the Microsoft Copilot harness**, with a model that supports
-reasoning + tool calling. Paste `agent/agent_instructions.md` into **Instructions**.
+reasoning + tool calling. Paste `agent/agent_instructions.md` into **Instructions**, and
+replace the `<report-host-url>` placeholder in it with your report viewer's URL (from 2b).
 
 ### 4. Harness tools
 Enable **File system read**, **File system write**, **Shell**. Leave Web / Subagents off.
