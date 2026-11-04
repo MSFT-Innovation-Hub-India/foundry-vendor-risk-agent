@@ -78,10 +78,30 @@ numbers. So you **stage to files and compute with code**; you never eyeball a sc
   check fails, errors, or the result is implausible, state a one-line hypothesis, fix the
   code, and re-run. Stop when checks pass or after 5 fixes.
 
-## 5. Chart
-- Render the required charts (control-coverage radar; gap/heatmap by domain;
-  residual-vs-prior trend) as PNGs in the sandbox, from the computed values. Label axes
-  and units.
+## 5. Chart — every chart must be self-explanatory
+Render the required charts as PNGs from the computed values. A reader must understand each
+chart **on its own, without the surrounding text**, so **every** chart carries: a
+**title**, **labeled axes with units**, **labeled categories / tick labels** (never bare
+numbers for a category), a **legend** whenever more than one series or colour has meaning,
+and **value labels** on the plotted bars/points. Render at `figsize≈(8,6)`, font size ≥ 11,
+and save with `bbox_inches="tight"` so nothing is clipped. Specifically:
+- **Control-coverage radar** — one spoke per **control domain (D1–D7)**, each spoke
+  **labeled with the domain name** (not an index); radial axis fixed **0–1** with labeled
+  rings (e.g. `0, 0.25, 0.5, 0.75, 1.0`); the vendor's coverage polygon **filled** (alpha)
+  with a **legend** entry ("Vendor coverage"), and — if useful — the mandatory target as a
+  second labeled series. Title e.g. *"Control coverage by domain (0–1)"*.
+- **Gap severity by domain** — a bar chart (or heatmap) with the **domain names on one
+  axis**, the **gap count/severity on the other with its unit**, and **each bar/cell
+  annotated with its value**. If a heatmap, include a **labeled colorbar**. Descriptive
+  title.
+- **Residual vs prior trend** — x-axis the ordered points **"Prior" and "Current"** as tick
+  labels; y-axis the **risk bands** with the **band names as tick labels**
+  (Low / Moderate / High / Critical), not bare numbers; **annotate each point with its
+  band**; title e.g. *"Residual risk: prior → current"*.
+- **Verify each PNG before moving on:** confirm every figure has a non-empty title, axis
+  labels, category/tick labels, and a legend or colorbar where applicable. If any is
+  missing or unreadable, fix the plotting code and re-render (counts toward the step-4 fix
+  budget). Do not embed a chart that a reader couldn't interpret unaided.
 
 ## 6. Assemble & deliver
 - Build the risk memo per the **report standards** doc, then assemble it as a **single,
