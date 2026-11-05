@@ -101,6 +101,18 @@ get_spend_history(vendor_id=1003)
 → 2024 $374,320 · 2025 $471,498 · 2026 $474,681
 ```
 
+### What the profile fields mean (and where each is used)
+
+| Field | Acme's value | Significance |
+|---|---|---|
+| **tier** (data classification) | Restricted | Highest sensitivity of data the vendor will handle. The **most consequential field**: it sets **inherent-risk points** (Restricted = 4, the max), **which controls are mandatory**, and **whether hard stops apply**. |
+| **criticality** | High | How badly a vendor failure would hurt the business. Inherent-risk points (High = 3). |
+| **processes_PII** | Yes | Whether personal data is in scope. +1 inherent point and raises regulatory weight. |
+| **residency** | US | Where data is processed; checked against the contracted region (control D5.2). |
+| **annual_contract_value** | $480,000 | Financial exposure / blast radius. Inherent-risk points ( > $300k = 3). |
+| **contract_status** | Pending | Engagement lifecycle. **Pending = prospective onboarding**, i.e. this is a pre-onboarding gate — context for the decision, not a scoring input. |
+| **service** | "Payroll processing" | What the vendor does, per the system of record. Context, and **cross-checked** against the questionnaire's stated service to catch mismatches (see the caveat below). |
+
 The agent writes these to **`facts.json`** so the scoring code reads from one place:
 
 ```json

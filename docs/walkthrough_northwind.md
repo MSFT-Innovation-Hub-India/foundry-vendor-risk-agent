@@ -82,6 +82,18 @@ get_spend_history(vendor_id=1007)
 → 2024 $99,945 · 2025 $109,663 · 2026 $128,167
 ```
 
+### What the profile fields mean (and where each is used)
+
+| Field | Northwind's value | Significance |
+|---|---|---|
+| **tier** (data classification) | Internal | Highest sensitivity of data handled. The **most consequential field**: it sets **inherent-risk points** (Internal = 2), **which controls are mandatory** (a small set at this tier), and **whether hard stops apply** (they don't, below Restricted). |
+| **criticality** | Medium | How badly a vendor failure would hurt the business. Inherent-risk points (Medium = 2). |
+| **processes_PII** | No | Whether personal data is in scope. No (0 points) here. |
+| **residency** | EU | Where data is processed; checked against the contracted region (control D5.2). |
+| **annual_contract_value** | $120,000 | Financial exposure / blast radius. Inherent-risk points ($100k–$300k = 2). |
+| **contract_status** | Pending | Engagement lifecycle. **Pending = prospective onboarding**, i.e. this is a pre-onboarding gate — context, not a scoring input. |
+| **service** | "Cloud hosting" | What the vendor does, per the system of record. Context, and cross-checked against the questionnaire's stated service. |
+
 Written to **`facts.json`**:
 
 ```json
