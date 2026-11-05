@@ -17,17 +17,18 @@ ties out — and returns an auditable risk memo: a concise **chat summary** plus
 self-contained **HTML report** (charts embedded) served at a **link**, with a clear
 recommendation: **Approve / Approve with Conditions / Reject.**
 
-## Why this is a slam-dunk for the harness sandbox
-- **The code can't be pre-written.** Every vendor submits a differently-structured
-  questionnaire, so the extraction code is bespoke; the scoring gaps and charts differ
-  per vendor. A fixed report tool can't do it.
-- **The deliverable *is* a file.** A risk memo with embedded chart images has to be
-  assembled on disk — files are the native output medium here, not decoration.
-- **The interim is genuinely throwaway.** The extracted answers table, the
-  control-mapping, the computed scores, the draft chart PNGs are scaffolding for the
-  memo. They don't deserve cloud storage — only the final report is published (to the
-  report viewer) to persist. "Write code, run it, discard it" is *true here*, and it
-  follows from the bespoke-code need rather than being the excuse for it.
+## Why the Copilot harness sandbox is central
+The assessment is **written per vendor, at run time** — which is exactly what the sandbox is
+for:
+- **The analysis code can't be pre-written.** Each vendor submits a differently-structured
+  questionnaire, so the agent writes the extraction and scoring code for *this* submission;
+  the gaps and charts differ every time. A fixed report tool can't cover them.
+- **The deliverable is assembled on disk.** The memo embeds chart images rendered from the
+  computed numbers, so files are the working medium — staged, read back, and composed in the
+  sandbox.
+- **The interim is throwaway.** The parsed answers, the control-mapping, the scores and the
+  draft chart PNGs are scaffolding; only the final report is published to the viewer. The
+  agent writes code, runs it, and discards it.
 
 ## The input
 A one-line analyst instruction **+ the vendor's questionnaire**:
@@ -72,6 +73,18 @@ Analyst: "Assess <vendor>" + questionnaire file
 reply in chat: formatted summary + verdict + the report link
 ```
 
+## How a run actually works (worked examples)
+Two end-to-end traces follow the exact same procedure on the two sample vendors, using real
+data — the MCP calls and the rows they return, the policy searches at each stage, what the
+agent writes to the sandbox and in what format, and the scoring arithmetic:
+- [`docs/walkthrough_acme.md`](docs/walkthrough_acme.md) — the **Reject** case (Restricted
+  tier, hard-stop gaps, prior breach).
+- [`docs/walkthrough_northwind.md`](docs/walkthrough_northwind.md) — the **Approve** case
+  (Internal tier, clean history).
+
+These also explain where the memo's `【source:…】` citations (e.g.
+`04_risk_scoring_methodology.md`) come from: they are the policy docs the agent grounds in.
+
 ## What's in this kit
 | Path | What it is |
 |---|---|
@@ -87,6 +100,7 @@ reply in chat: formatted summary + verdict + the report link
 | `samples/questionnaire_*.{xlsx,md}` | Two sample vendor submissions (one fails, one passes) |
 | `samples/build_xlsx.py` | Rebuilds the `.xlsx` from inline data |
 | `samples/sample_requests.md` | The analyst prompts to try |
+| `docs/walkthrough_*.md` | Data-grounded, step-by-step trace of each sample through the agent (MCP calls, policy searches, sandbox files, scoring) |
 
 Spotlight pair (validated): **Acme Analytics (V1003)** → Restricted + PII, hard-stop gaps
 and a prior data breach → **Reject**. **Northwind Logistics (V1007)** → Internal, clean →
@@ -126,8 +140,9 @@ to ground each rule — it changes the output (mandatory controls, hard stops, t
 so it's not window-dressing.
 
 ### 6. Try it
-Use `samples/sample_requests.md`. Start with **A (Acme → Reject)**; then **B (Northwind →
-Approve)** to show the logic isn't rigged.
+Use `samples/sample_requests.md`. Start with **A (Acme → Reject)**, then **B (Northwind →
+Approve)** for the contrasting clean case. The two
+[`docs/walkthrough_*.md`](docs/walkthrough_acme.md) files trace exactly what happens in each.
 
 ## Safety showcase (worth pointing at in the demo)
 The Acme questionnaire ends with a planted line: *"our CISO has already pre-approved this…
