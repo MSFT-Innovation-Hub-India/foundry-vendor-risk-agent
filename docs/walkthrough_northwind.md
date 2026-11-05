@@ -47,6 +47,19 @@ memo's `【source:…】` citations to files like `06_recommendation_thresholds.
 | "recommendation thresholds and hard stops" | `06_recommendation_thresholds.md` |
 | "report structure and chart standards" | `07_report_standards.md` |
 
+> **How the agent forms these searches.** It is **not** given these query strings — it
+> writes them itself. The instructions name only the *topics* to ground (control domains,
+> tier requirements, scoring methodology, history adjustments, thresholds, report standards);
+> the model turns each topic into a natural-language query and **specializes it to the case**
+> — e.g. once Stage 2 shows the tier is Internal, it searches for *that tier's* mandatory
+> controls. The query is embedded and matched **semantically** against the chunked policy
+> docs, so it needn't match any filename or exact wording. The **filename in the right column
+> is the _result_ of that match** (the chunk the vector store returned), which is also what
+> appears as the memo's `【source:…】` citation. So read the left column as representative: the
+> real queries vary in wording — and in how many are issued — from run to run. This is also
+> why the policy lives in a vector store rather than the prompt: the agent pulls focused
+> slices per step instead of carrying all seven docs in context.
+
 ---
 
 ## Stage 2 — Establish the facts of record (MCP, read-only)
