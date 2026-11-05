@@ -219,6 +219,20 @@ auditable as a Reject.
 
 ---
 
+## Sandbox files at a glance
+
+Everything below is written inside the **ephemeral** sandbox and discarded when the run ends;
+only the final report is published to the viewer.
+
+| File | Written in | What it contains |
+|---|---|---|
+| `questionnaire.md` / `.xlsx` | Stage 0 | The vendor's submission exactly as received — the unstructured input. |
+| `facts.json` | Stage 2 | The system-of-record facts from the MCP calls (profile, incidents, SLA breaches, prior assessment, spend) in one JSON the scoring code reads. |
+| `answers.csv` | Stage 3 | The questionnaire parsed into one row per control: `domain, control, question, answer, score, notes`. |
+| `score.py` | Stage 4 | The bespoke scoring code the agent writes and runs: inherent points, control effectiveness over the mandatory controls, residual band, history adjustments, hard stops, and the verify checks. |
+| `control_coverage_radar.png`, `gap_severity_by_domain.png`, `residual_vs_prior_trend.png` | Stage 5 | The three charts, rendered from the computed values. |
+| `report.html` | Stage 6 | The self-contained memo (charts embedded as base64) that is POSTed to the report viewer and served at the link. |
+
 ## The outcome
 
 > **Approve** — residual **Low**. Inherent risk is Medium and strong mandatory-control
