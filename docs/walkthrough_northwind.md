@@ -35,30 +35,12 @@ list_vendors(name_like="Northwind")
      "Industry": "Logistics", "Country": "Germany" }]
 ```
 
-**Knowledge (vector) search** — the same policy library is searched; this is where the
-memo's `【source:…】` citations to files like `06_recommendation_thresholds.md` come from:
-
-| The agent searches for… | Answering policy doc |
-|---|---|
-| "control domains" | `02_control_domains.md` |
-| "mandatory controls for the data tier" | `03_control_requirements_by_tier.md` |
-| "how is inherent / residual risk scored" | `04_risk_scoring_methodology.md` |
-| "incident and SLA history adjustments" | `05_incident_and_sla_adjustments.md` |
-| "recommendation thresholds and hard stops" | `06_recommendation_thresholds.md` |
-| "report structure and chart standards" | `07_report_standards.md` |
-
-> **How the agent forms these searches.** It is **not** given these query strings — it
-> writes them itself. The instructions name only the *topics* to ground (control domains,
-> tier requirements, scoring methodology, history adjustments, thresholds, report standards);
-> the model turns each topic into a natural-language query and **specializes it to the case**
-> — e.g. once Stage 2 shows the tier is Internal, it searches for *that tier's* mandatory
-> controls. The query is embedded and matched **semantically** against the chunked policy
-> docs, so it needn't match any filename or exact wording. The **filename in the right column
-> is the _result_ of that match** (the chunk the vector store returned), which is also what
-> appears as the memo's `【source:…】` citation. So read the left column as representative: the
-> real queries vary in wording — and in how many are issued — from run to run. This is also
-> why the policy lives in a vector store rather than the prompt: the agent pulls focused
-> slices per step instead of carrying all seven docs in context.
+**Knowledge (vector) search** — the agent searches the same **policy library** to ground the
+rules it applies (the tier's mandatory controls, the scoring methodology, the history
+adjustments, the recommendation thresholds). Each hit becomes a `【source:…】` citation in the
+memo. What the library contains, and how the agent writes these queries, is catalogued once in
+**[`data_sources.md`](data_sources.md)** — here, note only that the tier-specific requirements
+are pulled **after** Stage 2, once the tier (**Internal**) is known.
 
 ---
 
@@ -82,17 +64,9 @@ get_spend_history(vendor_id=1007)
 → 2024 $99,945 · 2025 $109,663 · 2026 $128,167
 ```
 
-### What the profile fields mean (and where each is used)
-
-| Field | Northwind's value | Significance |
-|---|---|---|
-| **tier** (data classification) | Internal | Highest sensitivity of data handled. The **most consequential field**: it sets **inherent-risk points** (Internal = 2), **which controls are mandatory** (a small set at this tier), and **whether hard stops apply** (they don't, below Restricted). |
-| **criticality** | Medium | How badly a vendor failure would hurt the business. Inherent-risk points (Medium = 2). |
-| **processes_PII** | No | Whether personal data is in scope. No (0 points) here. |
-| **residency** | EU | Where data is processed; checked against the contracted region (control D5.2). |
-| **annual_contract_value** | $120,000 | Financial exposure / blast radius. Inherent-risk points ($100k–$300k = 2). |
-| **contract_status** | Pending | Engagement lifecycle. **Pending = prospective onboarding**, i.e. this is a pre-onboarding gate — context, not a scoring input. |
-| **service** | "Cloud hosting" | What the vendor does, per the system of record. Context, and cross-checked against the questionnaire's stated service. |
+(What each profile field means and drives — tier, criticality, PII, residency, contract
+value/status, service — is catalogued once in
+[`data_sources.md`](data_sources.md#what-the-get_vendor_profile-fields-drive).)
 
 Written to **`facts.json`**:
 

@@ -82,8 +82,10 @@ agent writes to the sandbox and in what format, and the scoring arithmetic:
 - [`docs/walkthrough_northwind.md`](docs/walkthrough_northwind.md) — the **Approve** case
   (Internal tier, clean history).
 
-These also explain where the memo's `【source:…】` citations (e.g.
-`04_risk_scoring_methodology.md`) come from: they are the policy docs the agent grounds in.
+The two data sources they draw on — the vendor DB (via MCP) and the policy/vector docs — are
+catalogued once in [`docs/data_sources.md`](docs/data_sources.md), which also explains where
+the memo's `【source:…】` citations come from. The walkthroughs themselves only show the data
+retrieved for their vendor.
 
 ## What's in this kit
 | Path | What it is |
@@ -100,6 +102,7 @@ These also explain where the memo's `【source:…】` citations (e.g.
 | `samples/questionnaire_*.{xlsx,md}` | Two sample vendor submissions (one fails, one passes) |
 | `samples/build_xlsx.py` | Rebuilds the `.xlsx` from inline data |
 | `samples/sample_requests.md` | The analyst prompts to try |
+| `docs/data_sources.md` | One place describing both data sources — the vendor DB (via MCP) and the policy/vector docs — and what each contains / how it's used |
 | `docs/walkthrough_*.md` | Data-grounded, step-by-step trace of each sample through the agent (MCP calls, policy searches, sandbox files, scoring) |
 
 Spotlight pair (validated): **Acme Analytics (V1003)** → Restricted + PII, hard-stop gaps

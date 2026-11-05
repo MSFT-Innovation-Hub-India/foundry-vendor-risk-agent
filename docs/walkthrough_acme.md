@@ -44,34 +44,12 @@ list_vendors(name_like="Acme")
      "Industry": "Analytics", "Country": "United States" }]
 ```
 
-**Knowledge (vector) search** — the agent retrieves the rules it will apply. These searches
-hit the **policy library** (`knowledge/*.md`), which is why the memo cites file names like
-`04_risk_scoring_methodology.md`: those are the grounded sources, surfaced as citations
-(`【source:…】`). Representative queries and the doc that answers each:
-
-| The agent searches for… | Answering policy doc |
-|---|---|
-| "control domains" | `02_control_domains.md` |
-| "mandatory controls for the data tier" | `03_control_requirements_by_tier.md` |
-| "how is inherent / residual risk scored" | `04_risk_scoring_methodology.md` |
-| "incident and SLA history adjustments" | `05_incident_and_sla_adjustments.md` |
-| "recommendation thresholds and hard stops" | `06_recommendation_thresholds.md` |
-| "report structure and chart standards" | `07_report_standards.md` |
-
-(The exact tier requirements are retrieved *after* Stage 2, once the tier is known.)
-
-> **How the agent forms these searches.** It is **not** given these query strings — it
-> writes them itself. The instructions name only the *topics* to ground (control domains,
-> tier requirements, scoring methodology, history adjustments, thresholds, report standards);
-> the model turns each topic into a natural-language query and **specializes it to the case**
-> — e.g. once Stage 2 shows the tier is Restricted, it searches for *that tier's* mandatory
-> controls and hard stops. The query is embedded and matched **semantically** against the
-> chunked policy docs, so it needn't match any filename or exact wording. The **filename in
-> the right column is the _result_ of that match** (the chunk the vector store returned),
-> which is also what appears as the memo's `【source:…】` citation. So read the left column as
-> representative: the real queries vary in wording — and in how many are issued — from run to
-> run. This is also why the policy lives in a vector store rather than the prompt: the agent
-> pulls focused slices per step instead of carrying all seven docs in context.
+**Knowledge (vector) search** — the agent searches the **policy library** to ground the rules
+it applies: the tier's mandatory controls and hard stops, the scoring methodology, the history
+adjustments, and the recommendation thresholds. Each hit becomes a `【source:…】` citation in
+the memo. What the library contains, and how the agent writes these queries, is catalogued
+once in **[`data_sources.md`](data_sources.md)** — here, note only that the tier-specific
+requirements are pulled **after** Stage 2, once the tier (**Restricted**) is known.
 
 ---
 
@@ -101,17 +79,10 @@ get_spend_history(vendor_id=1003)
 → 2024 $374,320 · 2025 $471,498 · 2026 $474,681
 ```
 
-### What the profile fields mean (and where each is used)
-
-| Field | Acme's value | Significance |
-|---|---|---|
-| **tier** (data classification) | Restricted | Highest sensitivity of data the vendor will handle. The **most consequential field**: it sets **inherent-risk points** (Restricted = 4, the max), **which controls are mandatory**, and **whether hard stops apply**. |
-| **criticality** | High | How badly a vendor failure would hurt the business. Inherent-risk points (High = 3). |
-| **processes_PII** | Yes | Whether personal data is in scope. +1 inherent point and raises regulatory weight. |
-| **residency** | US | Where data is processed; checked against the contracted region (control D5.2). |
-| **annual_contract_value** | $480,000 | Financial exposure / blast radius. Inherent-risk points ( > $300k = 3). |
-| **contract_status** | Pending | Engagement lifecycle. **Pending = prospective onboarding**, i.e. this is a pre-onboarding gate — context for the decision, not a scoring input. |
-| **service** | "Payroll processing" | What the vendor does, per the system of record. Context, and **cross-checked** against the questionnaire's stated service to catch mismatches (see the caveat below). |
+(What each profile field means and drives — tier, criticality, PII, residency, contract
+value/status, service — is catalogued once in
+[`data_sources.md`](data_sources.md#what-the-get_vendor_profile-fields-drive). Note the
+contract **service of record** here is "Payroll processing".)
 
 The agent writes these to **`facts.json`** so the scoring code reads from one place:
 
