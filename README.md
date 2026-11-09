@@ -62,6 +62,15 @@ image by default (OCR adds fragility and isn't the point — it's a documented o
 extension: swap the extraction step for vision/OCR).
 
 ## Architecture / flow
+![Architecture: a security analyst talks to a Copilot-harness prompt agent in Microsoft Foundry (agent loop, GPT-5.4 model, sandbox container, knowledge and tools), which connects to a Foundry vector store and a custom MCP server in front of the risk management database](docs/images/architecture.png)
+
+The analyst talks to a **prompt agent** running on the **Copilot harness** in Microsoft Foundry:
+the agent loop (plan · act) drives the model and a **sandbox container**, using **Knowledge**
+(the Foundry vector store holding the TPRM policy library) and **Tools / Actions** (a custom
+MCP server in front of the risk management database).
+
+Step-by-step flow:
+
 ```
 Analyst: "Assess <vendor>" + questionnaire file
    │

@@ -29,6 +29,8 @@ summary plus a full HTML risk memo with charts — with a clear verdict:
 
 ## How it works
 
+![Architecture: a security analyst talks to a Copilot-harness prompt agent in Microsoft Foundry, which connects to a Foundry vector store and a custom MCP server in front of the risk management database](images/architecture.png)
+
 1. The analyst gives a one-line instruction and the vendor's questionnaire.
 2. The agent retrieves control requirements, scoring rules and thresholds from the TPRM policy library (vector search).
 3. It fetches the vendor's facts of record — profile, incidents, SLA breaches, prior assessments — from Azure SQL through a read-only **MCP** server.
