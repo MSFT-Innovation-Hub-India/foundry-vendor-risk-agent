@@ -1,0 +1,8 @@
+---
+layout: null
+permalink: /robots.txt
+---
+User-agent: *
+Allow: /
+
+Sitemap: https://msft-innovation-hub-india.github.io/foundry-vendor-risk-agent/sitemap.xml

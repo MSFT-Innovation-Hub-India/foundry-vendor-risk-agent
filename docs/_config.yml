@@ -1,0 +1,19 @@
+title: Foundry Vendor Risk Agent — AI Third-Party Risk Assessment on Microsoft Foundry
+description: An AI agent that automates third-party risk management (TPRM) vendor assessments on Microsoft Foundry — MCP, Azure SQL, policy vector search and sandbox-run scoring code produce an auditable Approve / Reject risk memo.
+url: https://msft-innovation-hub-india.github.io
+baseurl: /foundry-vendor-risk-agent
+lang: en
+theme: jekyll-theme-cayman
+show_downloads: false
+github:
+  repository_url: https://github.com/MSFT-Innovation-Hub-India/foundry-vendor-risk-agent
+logo: /images/video-thumbnail.jpg
+social:
+  name: Microsoft Innovation Hub India
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: false

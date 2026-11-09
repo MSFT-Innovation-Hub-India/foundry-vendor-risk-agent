@@ -1,3 +1,8 @@
+---
+title: Data sources — vendor database and TPRM policy library
+description: The two data sources the Foundry vendor risk agent uses — the Azure SQL vendor database (via MCP) and the TPRM policy library (vector search).
+---
+
 # Data sources — the vendor database and the policy library
 
 The agent draws on two sources, the same for every vendor. This doc describes what each
@@ -11,7 +16,7 @@ they only show the specific rows retrieved for their vendor.
 
 The system of record for vendor facts. The agent **never writes SQL**; it reads bounded,
 parameterized views through six MCP tools (full spec:
-[`../mcp/tool_contract.md`](../mcp/tool_contract.md)).
+[`../mcp/tool_contract.md`](https://github.com/MSFT-Innovation-Hub-India/foundry-vendor-risk-agent/blob/main/mcp/tool_contract.md)).
 
 | MCP tool | Returns | Used for |
 |---|---|---|
@@ -35,7 +40,7 @@ parameterized views through six MCP tools (full spec:
 | **service** | What the vendor does, per the system of record. Context, and cross-checked against the questionnaire's stated service to catch mismatches. |
 
 The point values for tier / criticality / contract value / PII are defined in
-[`../knowledge/04_risk_scoring_methodology.md`](../knowledge/04_risk_scoring_methodology.md).
+[`../knowledge/04_risk_scoring_methodology.md`](https://github.com/MSFT-Innovation-Hub-India/foundry-vendor-risk-agent/blob/main/knowledge/04_risk_scoring_methodology.md).
 
 ---
 

@@ -1,3 +1,8 @@
+---
+title: Walkthrough — Northwind Logistics vendor risk assessment (Approve)
+description: Step-by-step trace of the AI vendor risk agent assessing Northwind Logistics — MCP calls, policy searches, sandbox scoring and an Approve verdict.
+---
+
 # Walkthrough — Northwind Logistics (V1007) → **Approve**
 
 A step-by-step trace of the same agent procedure on the **clean** vendor, using the

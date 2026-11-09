@@ -1,3 +1,8 @@
+---
+title: Walkthrough — Acme Analytics vendor risk assessment (Reject)
+description: Step-by-step trace of the AI vendor risk agent assessing Acme Analytics — MCP calls, policy searches, sandbox scoring and a Reject verdict.
+---
+
 # Walkthrough — Acme Analytics (V1003) → **Reject**
 
 A step-by-step trace of how the Copilot-harness agent processes one request, using the

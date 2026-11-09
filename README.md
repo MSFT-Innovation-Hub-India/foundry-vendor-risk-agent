@@ -1,4 +1,23 @@
-# Foundry Vendor Risk Agent — TPRM Assessment on the Copilot Harness
+# Foundry Vendor Risk Agent — Third-Party Risk Management (TPRM) Assessment with Microsoft Foundry
+
+**An AI agent for vendor security assessment, built on Microsoft Foundry and the Copilot harness.**
+It reads a vendor's security questionnaire, grounds every rule in your TPRM policy via vector
+search, pulls facts of record from Azure SQL over MCP, runs its own scoring code in a sandbox,
+and returns an auditable **Approve / Approve with Conditions / Reject** risk memo.
+
+[![Watch the demo on YouTube](docs/images/video-thumbnail.jpg)](https://youtu.be/4jcQ52ctDY0)
+
+▶ **[Watch the demo video](https://youtu.be/4jcQ52ctDY0)** ·
+📖 **[Read the article: Copilot Harness — the runtime that builds the agent for you](https://www.linkedin.com/pulse/copilot-harness-runtime-builds-agent-you-srikantan-sankaran-hgmac/)** ·
+🌐 **[Project site](https://msft-innovation-hub-india.github.io/foundry-vendor-risk-agent/)**
+
+The article explains the Copilot harness in Microsoft Foundry — the managed, sandboxed runtime
+(file system, shell, sessions) that surrounds an agent — and uses vendor risk assessment as the
+use case. This repo is the code behind that scenario.
+
+**Keywords:** third-party risk management (TPRM), vendor risk assessment, GRC, security
+questionnaire automation, Microsoft Foundry, Copilot harness, agent sandbox, MCP (Model Context
+Protocol), Azure SQL, Azure Container Apps.
 
 > See **`DEPLOYMENT.md`** for the full Azure deployment guide (serverless Azure SQL + an MCP
 > Container App with **managed-identity** auth + a small **report-viewer** Container App +
