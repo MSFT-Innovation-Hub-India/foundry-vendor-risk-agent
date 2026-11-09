@@ -1,4 +1,4 @@
-# Foundry Vendor Risk Agent — Third-Party Risk Management (TPRM) Assessment with Microsoft Foundry
+# Vendor Risk Agent — Third-Party Risk Management (TPRM) Assessment with Microsoft Foundry
 
 **An AI agent for vendor security assessment, built on Microsoft Foundry and the Copilot harness.**
 It reads a vendor's security questionnaire, grounds every rule in your TPRM policy via vector
