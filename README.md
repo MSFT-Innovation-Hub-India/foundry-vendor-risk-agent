@@ -8,7 +8,9 @@ and returns an auditable **Approve / Approve with Conditions / Reject** risk mem
 [![Watch the demo on YouTube](docs/images/video-thumbnail.jpg)](https://youtu.be/4jcQ52ctDY0)
 
 ▶ **[Watch the demo video](https://youtu.be/4jcQ52ctDY0)** ·
+
 📖 **[Read the article: Copilot Harness — the runtime that builds the agent for you](https://www.linkedin.com/pulse/copilot-harness-runtime-builds-agent-you-srikantan-sankaran-hgmac/)** ·
+
 🌐 **[Project site](https://msft-innovation-hub-india.github.io/foundry-vendor-risk-agent/)**
 
 The article explains the Copilot harness in Microsoft Foundry — the managed, sandboxed runtime
